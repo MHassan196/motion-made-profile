@@ -23,7 +23,7 @@ export function Education() {
               className="card-surface group relative h-full overflow-hidden rounded-2xl p-6 shadow-glow transition-colors duration-300 hover:border-primary/40"
             >
               <span
-                className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-accent/10 blur-2xl transition-opacity duration-500 group-hover:opacity-150"
+                className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-accent/10 blur-2xl"
                 aria-hidden
               />
               <div className="flex items-start justify-between gap-3">
