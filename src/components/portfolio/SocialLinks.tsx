@@ -3,9 +3,9 @@ import { profile } from "@/data/portfolio";
 
 export function SocialLinks({ className = "" }: { className?: string }) {
   const items = [
-    { label: "GitHub", href: profile.socials.github, Icon: SiGithub },
-    { label: "LinkedIn", href: profile.socials.linkedin, Icon: SiLinkedin },
-    { label: "Facebook", href: profile.socials.facebook, Icon: SiFacebook },
+    { label: "GitHub", href: profile.socials.github, Icon: FaGithub },
+    { label: "LinkedIn", href: profile.socials.linkedin, Icon: FaLinkedin },
+    { label: "Facebook", href: profile.socials.facebook, Icon: FaFacebook },
   ];
 
   return (
