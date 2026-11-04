@@ -1,4 +1,4 @@
-import { SiFacebook, SiGithub, SiLinkedin } from "react-icons/si";
+import { FaFacebook, FaGithub, FaLinkedin } from "react-icons/fa6";
 import { profile } from "@/data/portfolio";
 
 export function SocialLinks({ className = "" }: { className?: string }) {

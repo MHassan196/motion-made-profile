@@ -16,7 +16,7 @@ export function Education() {
 
       <Stagger className="grid gap-6 md:grid-cols-3">
         {education.map((edu, i) => (
-          <StaggerItem key={edu.institution} className={i === 0 ? "md:col-span-1" : undefined}>
+          <StaggerItem key={edu.institution}>
             <motion.article
               whileHover={{ y: -8 }}
               transition={{ duration: 0.3, ease: easeOut }}

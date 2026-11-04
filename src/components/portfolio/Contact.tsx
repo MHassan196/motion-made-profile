@@ -117,8 +117,8 @@ export function Contact() {
             </label>
             <motion.button
               type="submit"
-              whileHover={configured ? { scale: 1.02 } : undefined}
-              whileTap={configured ? { scale: 0.98 } : undefined}
+              whileHover={{ scale: configured ? 1.02 : 1 }}
+              whileTap={{ scale: configured ? 0.98 : 1 }}
               transition={{ duration: 0.25, ease: easeOut }}
               disabled={!configured}
               className="group relative mt-6 flex w-full items-center justify-center gap-2 overflow-hidden rounded-full bg-primary px-8 py-3.5 font-display font-semibold text-primary-foreground transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-60"
