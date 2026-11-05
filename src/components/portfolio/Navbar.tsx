@@ -1,7 +1,8 @@
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useScroll, useSpring } from "framer-motion";
 import { useEffect, useState } from "react";
 import { navLinks, profile } from "@/data/portfolio";
 import { SocialLinks } from "./SocialLinks";
+import { ThemeToggle } from "./ThemeToggle";
 import { easeOut } from "./Reveal";
 import { cn } from "@/lib/utils";
 import { Menu, X } from "lucide-react";
@@ -12,6 +13,8 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState("home");
   const [open, setOpen] = useState(false);
+  const { scrollYProgress } = useScroll();
+  const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 30, mass: 0.4 });
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -51,7 +54,7 @@ export function Navbar() {
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-all duration-500",
         scrolled
-          ? "border-b border-border bg-background/80 backdrop-blur-xl"
+          ? "border-b border-border bg-background/85 backdrop-blur-xl"
           : "border-b border-transparent bg-transparent",
       )}
     >
@@ -61,13 +64,11 @@ export function Navbar() {
             MH
           </span>
           <span className="font-display text-lg font-semibold tracking-tight text-foreground">
-            {profile.firstName}
-            <span className="text-primary">.</span>
-            {profile.lastName.split(" ")[1] ?? "Hassan"}
+            {profile.name}
           </span>
         </a>
 
-        <ul className="hidden items-center gap-1 lg:flex">
+        <ul className="hidden items-center gap-6 lg:flex">
           {navLinks.map((link) => {
             const id = link.href.replace("#", "");
             const isActive = active === id;
@@ -76,42 +77,53 @@ export function Navbar() {
                 <a
                   href={link.href}
                   className={cn(
-                    "relative z-10 rounded-full px-4 py-2 text-sm font-medium transition-colors duration-300",
-                    isActive ? "text-primary-foreground" : "text-muted-foreground hover:text-foreground",
+                    "text-sm font-medium transition-colors duration-300",
+                    isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground",
                   )}
                 >
+                  {link.label}
                   {isActive && (
                     <motion.span
-                      layoutId="nav-pill"
-                      className="absolute inset-0 -z-10 rounded-full bg-primary"
-                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                      layoutId="nav-underline"
+                      className="absolute -bottom-1.5 inset-x-0 h-0.5 rounded-full bg-primary"
+                      transition={{ type: "spring", stiffness: 400, damping: 32 }}
                     />
                   )}
-                  {link.label}
                 </a>
               </li>
             );
           })}
         </ul>
 
-        <div className="hidden items-center gap-3 lg:flex">
+        <div className="hidden items-center gap-2.5 lg:flex">
+          <ThemeToggle />
           <a
             href={profile.cvUrl}
             download
-            className="rounded-full border border-border bg-card/60 px-5 py-2 text-sm font-medium text-foreground transition-all duration-300 hover:border-primary/50 hover:text-primary"
+            className="rounded-lg border border-border bg-card px-5 py-2 text-sm font-medium text-foreground transition-colors duration-300 hover:border-primary/60 hover:text-primary"
           >
             Download CV
           </a>
         </div>
 
-        <button
-          onClick={() => setOpen(!open)}
-          aria-label={open ? "Close menu" : "Open menu"}
-          className="flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-card/60 text-foreground lg:hidden"
-        >
-          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
+        <div className="flex items-center gap-2 lg:hidden">
+          <ThemeToggle />
+          <button
+            onClick={() => setOpen(!open)}
+            aria-label={open ? "Close menu" : "Open menu"}
+            className="flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-card text-foreground"
+          >
+            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
       </nav>
+
+      {/* Scroll progress line */}
+      <motion.div
+        style={{ scaleX: progress }}
+        className={cn("absolute inset-x-0 bottom-0 h-0.5 origin-left bg-primary", !scrolled && "opacity-0")}
+        aria-hidden
+      />
 
       <AnimatePresence>
         {open && (
@@ -132,13 +144,12 @@ export function Navbar() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.06 * i, duration: 0.4, ease: easeOut }}
                   className={cn(
-                    "rounded-xl px-4 py-3 font-display text-2xl font-medium transition-colors",
+                    "rounded-lg px-4 py-3 font-display text-2xl font-medium transition-colors",
                     active === link.href.replace("#", "")
                       ? "text-primary"
                       : "text-foreground hover:text-primary",
                   )}
                 >
-                  <span className="mr-3 text-sm text-muted-foreground">0{i + 1}</span>
                   {link.label}
                 </motion.a>
               ))}
@@ -148,7 +159,7 @@ export function Navbar() {
               <a
                 href={profile.cvUrl}
                 download
-                className="mt-6 block rounded-full bg-primary px-6 py-3 text-center font-medium text-primary-foreground"
+                className="mt-6 block rounded-lg bg-primary px-6 py-3 text-center font-medium text-primary-foreground"
               >
                 Download CV
               </a>
