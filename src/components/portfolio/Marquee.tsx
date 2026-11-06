@@ -5,9 +5,7 @@ const techNames = skillGroups.flatMap((g) => g.skills.map((s) => s.name));
 export function Marquee() {
   const row = [...techNames, ...techNames];
   return (
-    <div className="marquee-paused relative overflow-hidden border-y border-border bg-card/40 py-5">
-      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-background to-transparent" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-background to-transparent" />
+    <div className="marquee-paused relative overflow-hidden border-y border-border py-4">
       <div className="animate-marquee flex w-max items-center gap-10">
         {row.map((name, i) => (
           <span key={name + i} className="flex items-center gap-10" aria-hidden={i >= techNames.length}>
