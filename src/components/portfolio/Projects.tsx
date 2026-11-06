@@ -1,5 +1,5 @@
-import { AnimatePresence, motion, useMotionValue, useSpring } from "framer-motion";
-import { useEffect, useMemo, useState, type MouseEvent } from "react";
+import { AnimatePresence, motion, useMotionValue, useScroll, useSpring, useTransform } from "framer-motion";
+import { useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
 import { ArrowUpRight, ChevronLeft, ChevronRight, ExternalLink, X } from "lucide-react";
 import { SiGithub } from "react-icons/si";
 import { projects, type Project } from "@/data/portfolio";
@@ -18,7 +18,10 @@ const sliderVariants = {
 
 /* ---------- Card with a subtle cursor-follow tilt ---------- */
 
-function ProjectCard({ project, onOpen }: { project: Project; onOpen: () => void }) {
+function ProjectCard({ project, index, onOpen }: { project: Project; index: number; onOpen: () => void }) {
+  const imageRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: imageRef, offset: ["start end", "end start"] });
+  const imageY = useTransform(scrollYProgress, [0, 1], [14, -14]);
   const rx = useMotionValue(0);
   const ry = useMotionValue(0);
   const rotateX = useSpring(rx, { stiffness: 180, damping: 22 });
@@ -42,30 +45,36 @@ function ProjectCard({ project, onOpen }: { project: Project; onOpen: () => void
         rx.set(0);
         ry.set(0);
       }}
-      initial={{ opacity: 0, scale: 0.94 }}
-      animate={{ opacity: 1, scale: 1 }}
+      initial={{ opacity: 0, y: 32, scale: 0.98 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true, amount: 0.15 }}
       exit={{ opacity: 0, scale: 0.94 }}
       transition={{ duration: 0.4, ease: easeOut }}
       whileHover={{ y: -5 }}
       style={{ rotateX, rotateY, transformPerspective: 900 }}
       className="card-surface group flex flex-col overflow-hidden rounded-xl text-left shadow-panel transition-colors duration-300 hover:border-primary/50"
     >
-      <div className="relative aspect-[16/10] overflow-hidden bg-secondary">
-        <img
+      <div ref={imageRef} className="relative aspect-[16/10] overflow-hidden bg-secondary">
+        <motion.img
+          style={{ y: imageY }}
           src={project.thumbnail}
           alt={`${project.title} preview`}
           loading="lazy"
-          className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+          className="h-[calc(100%+28px)] w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.04]"
         />
+        <span className="absolute left-4 top-4 font-mono text-xs tabular-nums text-foreground/80 mix-blend-difference">
+          {String(index + 1).padStart(2, "0")}
+        </span>
         <span className="absolute bottom-3 right-3 flex h-9 w-9 translate-y-2 items-center justify-center rounded-lg border border-border bg-background/85 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
           <ArrowUpRight className="h-4 w-4 text-foreground" />
         </span>
       </div>
-      <div className="flex flex-1 flex-col p-5">
-        <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground">{project.type}</p>
-        <h3 className="mt-1 font-display text-lg font-semibold text-foreground">{project.title}</h3>
-        <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-muted-foreground">{project.description}</p>
-        <p className="mt-4 truncate text-xs text-muted-foreground/80">{project.tags.join(" · ")}</p>
+      <div className="flex flex-1 items-start justify-between gap-4 px-1 py-4">
+        <div>
+          <h3 className="font-display text-lg font-semibold text-foreground">{project.title}</h3>
+          <p className="mt-1 line-clamp-2 text-sm leading-relaxed text-muted-foreground">{project.description}</p>
+        </div>
+        <ArrowUpRight className="mt-1 h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-primary" />
       </div>
     </motion.button>
   );
@@ -256,16 +265,16 @@ export function Projects() {
   }, [selected]);
 
   return (
-    <section id="projects" className="relative mx-auto max-w-6xl scroll-mt-24 px-4 py-24 sm:px-6 md:py-32">
-      <SectionHeading title="Projects" />
+    <section id="projects" className="mx-auto max-w-6xl scroll-mt-24 px-4 py-16 sm:px-6 md:py-20">
+      <SectionHeading title="Projects" align="left" />
 
-      <div className="mb-10 flex justify-center gap-7">
+      <div className="mb-7 flex gap-6 border-b border-border">
         {filters.map((f) => (
           <button
             key={f}
             onClick={() => setFilter(f)}
             className={cn(
-              "relative pb-1.5 text-sm font-medium transition-colors duration-300",
+              "relative pb-3 text-sm font-medium transition-colors duration-300",
               filter === f ? "text-foreground" : "text-muted-foreground hover:text-foreground",
             )}
           >
@@ -284,7 +293,7 @@ export function Projects() {
       <motion.div layout className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         <AnimatePresence mode="popLayout">
           {visible.map((project) => (
-            <ProjectCard key={project.title} project={project} onOpen={() => setSelected(project)} />
+            <ProjectCard key={project.title} project={project} index={projects.indexOf(project)} onOpen={() => setSelected(project)} />
           ))}
         </AnimatePresence>
       </motion.div>
