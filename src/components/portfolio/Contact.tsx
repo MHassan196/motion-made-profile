@@ -23,21 +23,12 @@ export function Contact() {
   };
 
   return (
-    <section id="contact" className="relative mx-auto max-w-6xl scroll-mt-24 px-4 py-24 sm:px-6 md:py-32">
-      <div
-        className="pointer-events-none absolute left-1/2 top-1/3 h-[360px] w-[640px] -translate-x-1/2 rounded-full bg-primary/8 blur-[120px]"
-        aria-hidden
-      />
-      <SectionHeading
-        eyebrow="Get in touch"
-        title="Let's build"
-        highlight="something"
-        subtitle="Have a project in mind or a role to fill? My inbox is open — I usually reply within a day."
-      />
+    <section id="contact" className="relative mx-auto max-w-6xl scroll-mt-24 px-4 py-16 sm:px-6 md:py-20">
+      <SectionHeading title="Contact" align="left" />
 
       <div className="mx-auto grid max-w-4xl gap-10 lg:grid-cols-5">
         <Reveal className="lg:col-span-2">
-          <div className="card-surface flex h-full flex-col gap-6 rounded-3xl p-7 shadow-glow">
+          <div className="card-surface flex h-full flex-col gap-6 rounded-lg p-7 shadow-panel">
             <div>
               <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/15 text-primary">
                 <Mail className="h-6 w-6" />
@@ -78,7 +69,7 @@ export function Contact() {
         <Reveal delay={0.12} className="lg:col-span-3">
           <form
             onSubmit={handleSubmit}
-            className="card-surface rounded-3xl p-7 shadow-glow md:p-8"
+            className="card-surface rounded-lg p-7 shadow-panel md:p-8"
             aria-label="Contact form"
           >
             <div className="grid gap-5 sm:grid-cols-2">
@@ -125,7 +116,6 @@ export function Contact() {
             >
               <span className="relative z-10">{sent ? "Opening your mail app…" : "Send message"}</span>
               {sent ? <CheckCircle2 className="relative z-10 h-4 w-4" /> : <Send className="relative z-10 h-4 w-4" />}
-              <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
             </motion.button>
           </form>
         </Reveal>

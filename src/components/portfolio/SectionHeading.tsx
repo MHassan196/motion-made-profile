@@ -12,7 +12,7 @@ export function SectionHeading({ title, align = "center", className }: SectionHe
   return (
     <div
       className={cn(
-        "mb-14 flex flex-col gap-5 md:mb-20",
+        "mb-9 flex flex-col gap-3 md:mb-12",
         align === "center" ? "items-center text-center" : "items-start text-left",
         className,
       )}

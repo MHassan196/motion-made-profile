@@ -24,7 +24,7 @@ const pillars = [
 
 export function About() {
   return (
-    <section id="about" className="relative mx-auto max-w-6xl scroll-mt-24 px-4 py-24 sm:px-6 md:py-32">
+    <section id="about" className="relative mx-auto max-w-6xl scroll-mt-24 px-4 py-16 sm:px-6 md:py-20">
       <SectionHeading title="About" />
 
       <div className="grid items-start gap-10 lg:grid-cols-5">

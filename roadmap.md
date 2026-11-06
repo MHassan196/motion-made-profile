@@ -1,0 +1,4 @@
+- [ ] Fix any preview/build errors and verify the page renders.
+- [ ] Tighten spacing and modernize Skills, Projects, Experience, and Education.
+- [ ] Add clear, polished scroll and interaction motion that respects reduced-motion preferences.
+- [ ] Verify desktop and mobile preview behavior.

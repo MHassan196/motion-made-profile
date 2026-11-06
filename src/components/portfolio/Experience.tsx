@@ -1,81 +1,69 @@
 import { useRef } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
-import { Briefcase } from "lucide-react";
 import { experiences } from "@/data/portfolio";
 import { SectionHeading } from "./SectionHeading";
-import { Stagger, StaggerItem, easeOut } from "./Reveal";
 
 export function Experience() {
   const timelineRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: timelineRef,
-    offset: ["start 75%", "end 60%"],
+    offset: ["start 75%", "end 55%"],
   });
-  const progress = useSpring(scrollYProgress, { stiffness: 90, damping: 25 });
+  const progress = useSpring(scrollYProgress, { stiffness: 100, damping: 26, mass: 0.35 });
 
   return (
-    <section id="experience" className="relative mx-auto max-w-6xl scroll-mt-24 px-4 py-24 sm:px-6 md:py-32">
-      <SectionHeading title="Experience" />
+    <section id="experience" className="mx-auto max-w-6xl scroll-mt-24 px-4 py-16 sm:px-6 md:py-20">
+      <SectionHeading title="Experience" align="left" />
 
-      <div ref={timelineRef} className="relative mx-auto max-w-3xl">
-        {/* Track + scroll-linked progress line */}
-        <div className="absolute left-[22px] top-0 h-full w-px bg-border md:left-1/2" aria-hidden />
+      <div ref={timelineRef} className="relative">
+        <div className="absolute bottom-0 left-[5px] top-0 w-px bg-border" aria-hidden />
         <motion.div
           style={{ scaleY: progress }}
-          className="absolute left-[22px] top-0 h-full w-px origin-top bg-primary md:left-1/2"
+          className="absolute bottom-0 left-[5px] top-0 w-px origin-top bg-primary"
           aria-hidden
         />
-
-        <Stagger className="flex flex-col gap-12">
-          {experiences.map((exp, i) => {
-            const left = i % 2 === 0;
-            return (
-              <StaggerItem key={exp.company}>
-                <div className={`relative flex md:items-center ${left ? "" : "md:flex-row-reverse"}`}>
-                  {/* Node */}
-                  <motion.span
-                    whileInView={{ scale: [0, 1.25, 1] }}
-                    viewport={{ once: true, margin: "-80px" }}
-                    transition={{ duration: 0.5, ease: easeOut }}
-                    className="absolute left-[22px] z-10 flex h-11 w-11 -translate-x-1/2 items-center justify-center rounded-full border border-primary/50 bg-background md:left-1/2"
-                  >
-                    <Briefcase className="h-4 w-4 text-primary" />
-                  </motion.span>
-
-                  <div className={`ml-14 w-full md:ml-0 md:w-1/2 ${left ? "md:pr-14" : "md:pl-14"}`}>
-                    <motion.article
-                      whileHover={{ y: -4 }}
-                      transition={{ duration: 0.3, ease: easeOut }}
-                      className="card-surface rounded-xl p-6 shadow-panel transition-colors duration-300 hover:border-primary/50"
-                    >
-                      <div className="flex items-center gap-3">
-                        {exp.logo && (
-                          <img
-                            src={exp.logo}
-                            alt={`${exp.company} logo`}
-                            loading="lazy"
-                            className="h-11 w-11 rounded-lg border border-border object-cover"
-                          />
-                        )}
-                        <div>
-                          <h3 className="font-display text-lg font-semibold text-foreground">{exp.role}</h3>
-                          <p className="text-sm font-medium text-primary">{exp.company}</p>
-                        </div>
-                      </div>
-                      <p className="mt-3 text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground">
-                        {exp.period}
-                      </p>
-                      <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{exp.description}</p>
-                      <p className="mt-5 text-xs leading-relaxed text-muted-foreground/80">
-                        {exp.skills.join(" · ")}
-                      </p>
-                    </motion.article>
-                  </div>
+        <div className="space-y-0">
+          {experiences.map((exp, index) => (
+            <motion.article
+              key={exp.company}
+              initial={{ opacity: 0, x: 28 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.25 }}
+              transition={{ duration: 0.65, delay: index * 0.12, ease: [0.22, 1, 0.36, 1] }}
+              className="relative grid gap-4 pb-10 pl-8 last:pb-0 md:grid-cols-[210px_1fr] md:gap-12 md:pl-10"
+            >
+              <motion.span
+                initial={{ scale: 0.5, opacity: 0 }}
+                whileInView={{ scale: 1, opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ type: "spring", stiffness: 280, damping: 20, delay: index * 0.12 + 0.12 }}
+                className="absolute left-0 top-1 h-[11px] w-[11px] rounded-full border-2 border-primary bg-background"
+                aria-hidden
+              />
+              <div className="flex items-start justify-between gap-4 md:block">
+                <p className="text-sm font-medium text-muted-foreground">{exp.period}</p>
+                {exp.logo && (
+                  <img
+                    src={exp.logo}
+                    alt={`${exp.company} logo`}
+                    loading="lazy"
+                    className="h-9 w-9 rounded-md border border-border object-cover md:mt-4"
+                  />
+                )}
+              </div>
+              <div className="border-b border-border pb-8 last:border-0 last:pb-0">
+                <h3 className="font-display text-xl font-semibold text-foreground md:text-2xl">{exp.role}</h3>
+                <p className="mt-1 text-base font-medium text-primary">{exp.company}</p>
+                <p className="mt-3 max-w-3xl text-sm leading-6 text-muted-foreground">{exp.description}</p>
+                <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2">
+                  {exp.skills.map((skill) => (
+                    <span key={skill} className="text-xs text-muted-foreground">{skill}</span>
+                  ))}
                 </div>
-              </StaggerItem>
-            );
-          })}
-        </Stagger>
+              </div>
+            </motion.article>
+          ))}
+        </div>
       </div>
     </section>
   );
