@@ -9,6 +9,7 @@ import { Experience } from "@/components/portfolio/Experience";
 import { Education } from "@/components/portfolio/Education";
 import { Contact } from "@/components/portfolio/Contact";
 import { Footer } from "@/components/portfolio/Footer";
+import { ScrollParallax } from "@/components/portfolio/ScrollParallax";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -38,15 +39,15 @@ function Portfolio() {
       <Navbar />
       <main>
         <Hero />
-        <Marquee />
-        <About />
-        <Skills />
-        <Projects />
-        <Experience />
-        <Education />
-        <Contact />
+        <ScrollParallax depth={0.7}><Marquee /></ScrollParallax>
+        <ScrollParallax><About /></ScrollParallax>
+        <ScrollParallax depth={1.1}><Skills /></ScrollParallax>
+        <ScrollParallax depth={0.9}><Projects /></ScrollParallax>
+        <ScrollParallax depth={1.1}><Experience /></ScrollParallax>
+        <ScrollParallax depth={0.8}><Education /></ScrollParallax>
+        <ScrollParallax><Contact /></ScrollParallax>
       </main>
-      <Footer />
+      <ScrollParallax depth={0.7}><Footer /></ScrollParallax>
     </div>
   );
 }
