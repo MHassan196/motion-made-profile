@@ -15,12 +15,12 @@ export function ScrollParallax({ children, depth = 1 }: ScrollParallaxProps) {
     offset: ["start end", "end start"],
   });
 
-  const yTarget = useTransform(scrollYProgress, [0, 0.24, 0.76, 1], [58 * depth, 0, 0, -58 * depth]);
-  const scaleTarget = useTransform(scrollYProgress, [0, 0.24, 0.76, 1], [0.97, 1, 1, 0.97]);
-  const opacityTarget = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.68, 1, 1, 0.68]);
-  const y = useSpring(yTarget, { stiffness: 90, damping: 24, mass: 0.3 });
-  const scale = useSpring(scaleTarget, { stiffness: 90, damping: 24, mass: 0.3 });
-  const opacity = useSpring(opacityTarget, { stiffness: 90, damping: 24, mass: 0.3 });
+  const yTarget = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [120 * depth, 0, 0, -120 * depth]);
+  const scaleTarget = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.92, 1, 1, 0.94]);
+  const opacityTarget = useTransform(scrollYProgress, [0, 0.15, 0.85, 1], [0.35, 1, 1, 0.55]);
+  const y = useSpring(yTarget, { stiffness: 75, damping: 22, mass: 0.35 });
+  const scale = useSpring(scaleTarget, { stiffness: 75, damping: 22, mass: 0.35 });
+  const opacity = useSpring(opacityTarget, { stiffness: 75, damping: 22, mass: 0.35 });
 
   return (
     <div ref={sceneRef} className="relative">
