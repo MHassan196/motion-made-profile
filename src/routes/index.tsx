@@ -39,15 +39,15 @@ function Portfolio() {
       <Navbar />
       <main>
         <Hero />
-        <ScrollParallax depth={0.7}><Marquee /></ScrollParallax>
-        <ScrollParallax><About /></ScrollParallax>
-        <ScrollParallax depth={1.1}><Skills /></ScrollParallax>
-        <ScrollParallax depth={0.9}><Projects /></ScrollParallax>
-        <ScrollParallax depth={1.1}><Experience /></ScrollParallax>
-        <ScrollParallax depth={0.8}><Education /></ScrollParallax>
-        <ScrollParallax><Contact /></ScrollParallax>
+        <ScrollParallax depth={0.7} layer={1}><Marquee /></ScrollParallax>
+        <ScrollParallax depth={1} layer={2} className="-mt-14"><About /></ScrollParallax>
+        <ScrollParallax depth={1.1} layer={3} className="-mt-14"><Skills /></ScrollParallax>
+        <ScrollParallax depth={0.9} layer={4} className="-mt-14"><Projects /></ScrollParallax>
+        <ScrollParallax depth={1.1} layer={5} className="-mt-14"><Experience /></ScrollParallax>
+        <ScrollParallax depth={0.8} layer={6} className="-mt-14"><Education /></ScrollParallax>
+        <ScrollParallax depth={1} layer={7} className="-mt-14"><Contact /></ScrollParallax>
       </main>
-      <ScrollParallax depth={0.7}><Footer /></ScrollParallax>
+      <ScrollParallax depth={0.7} layer={8} className="-mt-8"><Footer /></ScrollParallax>
     </div>
   );
 }
